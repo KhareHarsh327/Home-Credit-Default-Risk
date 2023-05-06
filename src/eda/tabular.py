@@ -23,3 +23,33 @@ def get_description(df: pd.DataFrame, key: str, value: str)->None:
         print("\n-> ",desc)
     
     return None
+
+
+
+def get_missing_values(df: pd.DataFrame)->pd.DataFrame:
+    """
+    Description:
+        A method to display the number and % of values missing from the dataframe.
+    Args:
+        * df    : a Pandas DataFrame from which the results are to be extracted.
+    Returns:
+        * A Pandas DataFrame containing the missing values expressed as absolute 
+          numbers and corresponding percentage.
+    """
+
+    # Creating the skeleton for the DataFrame
+    table = pd.DataFrame(
+        columns=["Column","Missing Values", "Missing Values by %"]
+    )
+
+    TOTAL: int = len(df.index)                          # Total number of rows
+
+    for col in df.columns:
+        NULL_VAL: int = df[col].isna().sum()            # Number of NaN values
+        temp_list: list = [                             # Creating a row to be appended
+            col, NULL_VAL,
+            round(NULL_VAL/TOTAL,5)*100
+        ]
+        table.loc[len(table)] = temp_list               # Adding the row to the DataFrame
+
+    return table
