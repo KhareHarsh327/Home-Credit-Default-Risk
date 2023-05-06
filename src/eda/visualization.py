@@ -6,8 +6,12 @@ import matplotlib.pyplot as plt
 
 
 def bar_plot(
-    category, frequency, axes, 
-    title: str, xlabel: str, ylabel: str
+    category,
+    frequency,
+    axes, 
+    title: str,
+    xlabel: str,
+    ylabel: str
 )->None:
     """
     Description:
@@ -17,7 +21,7 @@ def bar_plot(
         * category  : An iterable containing the name of all the categories.
         * frequency : An iterable containing the frequency of all the categories.
         * axes      : A matplotlib.axes.Axes object for the plotting area.
-        * title     : A string bearing the name for the plotting area.
+        * title     : A String bearing the name for the plotting area.
     Returns:
         * None
     """
@@ -42,7 +46,9 @@ def bar_plot(
 
 
 def pie_plot(
-    category,frequency, axes, 
+    category,
+    frequency, 
+    axes: matplotlib.axes.Axes, 
     title: str
 )->None:
     """
@@ -52,7 +58,7 @@ def pie_plot(
         * category  : An iterable containing the name of all the categories.
         * frequency : An iterable containing the frequency of all the categories.
         * axes      : A matplotlib.axes.Axes object for the plotting area.
-        * title     : A string bearing the name for the plotting area.
+        * title     : A String bearing the title for the plotting area.
     Returns:
         * None
     """
@@ -70,7 +76,8 @@ def pie_plot(
 
 
 def categorical_distribution(
-    title: str, series: pd.Series
+    title: str,
+    series: pd.Series
 )->None:
     """
     Description:
@@ -115,8 +122,10 @@ def categorical_distribution(
 
 
 def numeric_distribution(
-    title: str, data,
-    num_col: str, cat_col: str = None
+    title: str, 
+    data,
+    num_col: str, 
+    cat_col: str = None
 )->None:
     """
     Description:
@@ -167,7 +176,8 @@ def numeric_distribution(
 
 def plot_correlation(
     title: str,
-    data: pd.DataFrame, target: str = None,
+    data: pd.DataFrame,
+    target: str = None,
     colormap: str = "RdBu"
 )->None:
     """
@@ -190,13 +200,13 @@ def plot_correlation(
         
         # Handling optional 'target' argument:
         target_series = data[target]
-        data = data.drop(labels=target, axis=1)
+        data = data.drop(labels=target, axis=1)         # Since target shall be plotted separately
         corr_arr = np.array([])
         
         for col in data.columns.values:                 # Getting the column names
             corr_arr = np.append(
                 corr_arr,
-                data[col].corr(target_series)           # Correlation between Series
+                data[col].corr(target_series)           # Correlation between two Series
             )
         corr_arr = corr_arr.reshape(len(corr_arr),1)    # 2-D input for heatmap
     
