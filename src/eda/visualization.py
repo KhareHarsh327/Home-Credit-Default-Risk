@@ -156,19 +156,19 @@ def numeric_distribution(
     sns.boxplot(
         data = data,
         x = num_col, y = cat_col,
-        ax = fig.add_axes([0, 0.55, 1, 0.45])
+        ax = fig.add_axes([0, 0.45, 1, 0.45])
     )
 
     # Adding the Distribution Plot:
     sns.histplot(                
         data = data[num_col],
-        ax = fig.add_axes([0, 0, 0.45, 0.45])
+        ax = fig.add_axes([0, 0, 0.45, 0.35])
     )
 
     # Adding the KDE Plot:
     sns.kdeplot(
         data = data[num_col],
-        ax = fig.add_axes([0.55, 0, 0.45, 0.45])
+        ax = fig.add_axes([0.55, 0, 0.45, 0.35])
     )
 
     fig.show()
