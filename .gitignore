@@ -158,6 +158,9 @@ temp.py
 temp.ipynb
 temp_commit_msg.txt
 
+# Original Data Files
+data/original/
+
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
 #  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore

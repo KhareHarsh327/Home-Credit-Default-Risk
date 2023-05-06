@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -83,7 +84,7 @@ def categorical_distribution(
     category = series.groupby(by=series).count()
 
     fig = plt.figure(
-        figsize=(12,10),
+        figsize=(14,10),
         frameon=True,
         edgecolor="black",
         linewidth=2
@@ -126,7 +127,8 @@ def numeric_distribution(
                       for the entire plot.
         * num_col   : A String bearing the name of the numeric column.
         * cat_col   : A String bearing the name of the categorical column 
-                      for plotting the numeric variable category-wise.
+                      for plotting the numeric variable category-wise;
+                      None by default.
     Returns:
         * None.
     """
@@ -158,5 +160,72 @@ def numeric_distribution(
         ax = fig.add_axes([0.55, 0, 0.45, 0.45])
     )
 
+    fig.show()
+    return None
+
+
+
+def plot_correlation(
+    title: str,
+    data: pd.DataFrame, target: str = None,
+    colormap: str = "RdBu"
+)->None:
+    """
+    Description:
+        A method to plot the distribution of a numeric variable.
+    Args:
+        * title     : A String bearing the title for the entire plot.
+        * data      : A Pandas DataFrame bearing the title 
+                      for the entire plot.
+        * target    : A String bearing the name of the target column;
+                      None by default.
+        * colormap  : A String bearing the name of the colour map 
+                      for plotting the correlations.
+    Returns:
+        * None.
+    """
+    data = data.select_dtypes(["int64","float64"])      # Choosing numeric columns
+    
+    if target is not None:
+        
+        # Handling optional 'target' argument:
+        target_series = data[target]
+        data = data.drop(labels=target, axis=1)
+        corr_arr = np.array([])
+        
+        for col in data.columns.values:                 # Getting the column names
+            corr_arr = np.append(
+                corr_arr,
+                data[col].corr(target_series)           # Correlation between Series
+            )
+        corr_arr = corr_arr.reshape(len(corr_arr),1)    # 2-D input for heatmap
+    
+    fig = plt.figure(
+        figsize=(12,10),
+        frameon=True,
+        edgecolor="black",
+        linewidth=2
+    )
+    fig.suptitle(title)
+    
+    # Correlation between the non-target columns:
+    sns.heatmap(
+        data = data.corr(),
+        cmap = colormap,
+        cbar = True,
+        xticklabels = True,
+        yticklabels = True,
+        ax = fig.add_axes([0.00, 0.00, 0.85, 0.90])
+    )
+    
+    # Correlation between the target column and the non-target columns:
+    if target is not None:
+        sns.heatmap(
+            data = corr_arr,
+            cmap = colormap,
+            cbar = False,
+            axes = fig.add_axes([0.90, 0.00, 0.10, 0.90])
+        )
+    
     fig.show()
     return None
