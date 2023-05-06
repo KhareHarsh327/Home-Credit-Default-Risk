@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import seaborn as sns
+import matplotlib
 import matplotlib.pyplot as plt
 
 
@@ -148,7 +149,8 @@ def numeric_distribution(
         linewidth=2
     )
     fig.suptitle(title)
-    data[cat_col] = data[cat_col].apply(lambda x: str(x))
+    if cat_col is not None:
+        data[cat_col] = data[cat_col].apply(lambda x: str(x))
     
     # Adding the Box Plot:
     sns.boxplot(
@@ -159,13 +161,13 @@ def numeric_distribution(
 
     # Adding the Distribution Plot:
     sns.histplot(                
-        data = data,
+        data = data[num_col],
         ax = fig.add_axes([0, 0, 0.45, 0.45])
     )
 
     # Adding the KDE Plot:
     sns.kdeplot(
-        data = data,
+        data = data[num_col],
         ax = fig.add_axes([0.55, 0, 0.45, 0.45])
     )
 
