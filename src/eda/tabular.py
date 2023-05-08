@@ -5,6 +5,7 @@ import pandas as pd
 ROOT_DIR: str = os.path.join("C:\\Users","KIIT","Desktop","Home Credit Default Risk")
 
 
+
 def get_description(df: pd.DataFrame, key: str, value: str)->None:
     """
     Description:
@@ -31,9 +32,9 @@ def get_missing_values(df: pd.DataFrame)->pd.DataFrame:
     Description:
         A method to display the number and % of values missing from the dataframe.
     Args:
-        * df    : a Pandas DataFrame from which the results are to be extracted.
+        * df    : A Pandas DataFrame from which the results are to be extracted.
     Returns:
-        * A Pandas DataFrame containing the missing values expressed as absolute 
+        * table : A Pandas DataFrame containing the missing values expressed as absolute 
           numbers and corresponding percentage.
     """
 
