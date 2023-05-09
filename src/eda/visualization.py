@@ -227,6 +227,7 @@ def plot_correlation(
         cbar = True,
         xticklabels = True,
         yticklabels = True,
+        vmin = -1.0, vmax = 1.0,
         ax = fig.add_axes([0.00, 0.00, 0.85, 0.90])
     )
     
@@ -236,6 +237,7 @@ def plot_correlation(
             data = corr_arr,
             cmap = colormap,
             cbar = False,
+            vmin = -1.0, vmax = 1.0,
             axes = fig.add_axes([0.90, 0.00, 0.10, 0.90])
         )
     
