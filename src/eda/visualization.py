@@ -176,7 +176,7 @@ def numeric_distribution(
 
 
 
-def plot_correlation(
+def plot_num_num_corr(
     title: str,
     data: pd.DataFrame,
     target: str = None,
@@ -187,8 +187,7 @@ def plot_correlation(
         A method to plot the distribution of a numeric variable.
     Args:
         * title     : A String bearing the title for the entire plot.
-        * data      : A Pandas DataFrame bearing the title 
-                      for the entire plot.
+        * data      : A Pandas DataFrame bearing the columns for plotting. 
         * target    : A String bearing the name of the target column;
                       None by default.
         * colormap  : A String bearing the name of the colour map 
@@ -196,7 +195,6 @@ def plot_correlation(
     Returns:
         * None.
     """
-    data = data.select_dtypes(["int64","float64"])      # Choosing numeric columns
     
     if target is not None:
         
