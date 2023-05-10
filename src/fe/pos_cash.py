@@ -52,7 +52,7 @@ def is_present(
     # Feature Generation:
     for value in values:
         label = value.split()
-        label = "FLAG_" + ("_".join(label).upper())
+        label = "FLAG_POS_" + ("_".join(label).upper())
         new_df[label] = ( data[column] == value )
     
     # Feature Aggregation:
@@ -73,7 +73,7 @@ def get_features(df: pd.DataFrame)->pd.DataFrame:
                   and selection process.
     """
     # Calculating the tolerance days:
-    df["DAYS_TOLERANCE"] = get_tolerance_days(
+    df["POS_DAYS_TOLERANCE"] = get_tolerance_days(
         days_with_tol = df["SK_ID_DEF"],
         days_without_tol = df["SK_DPD_DEF"]
     )

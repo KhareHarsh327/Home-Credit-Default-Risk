@@ -60,20 +60,20 @@ def get_features(df: pd.DataFrame)->pd.DataFrame:
                   and selection process.
     """
     # Computing the payment ratio for each installment:
-    df["PAY_RATIO"] = get_pay_ratio(
+    df["INST_PAY_RATIO"] = get_pay_ratio(
         amt_payable = df["AMT_INSTALMENT"],
         amt_paid = df["AMT_PAYMENT"]
     )
 
     # Computing the days delayed for every installment:
-    df["DAYS_DELAYED"] = get_delay_days(
+    df["INST_DAYS_DELAYED"] = get_delay_days(
         pay_day = df["DAYS_ENTRY_PAYMENT"],
         due_day = df["DAYS_INSTALMENT"]
     )
 
     # Feature Selection:
     new_fs = df[
-        ["SK_ID_PREV", "SK_ID_CURR", "PAY_RATIO", "DAYS_DELAYED"]
+        ["SK_ID_PREV", "SK_ID_CURR", "INST_PAY_RATIO", "INST_DAYS_DELAYED"]
     ]
 
     # Feature Aggregation:
