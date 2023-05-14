@@ -54,3 +54,71 @@ def get_missing_values(df: pd.DataFrame)->pd.DataFrame:
         table.loc[len(table)] = temp_list               # Adding the row to the DataFrame
 
     return table
+
+
+
+def desc_num_var(series: pd.Series):
+    """
+    Description:
+        A method to describe a 'numeric' variable without visualization.
+    Args:
+        * series: A Pandas Series containing the information of the variable.
+    Returns:
+        * None
+    """
+    desc = series.describe()
+    desc["IQR"] = abs(desc["75%"] - desc["25%"])
+    
+    # Deriving the range of the Whiskers in the Box Plot
+    max_limit = min(desc["max"], desc["75%"] + 1.5*desc["IQR"])
+    min_limit = max(desc["min"], desc["25%"] - 1.5*desc["IQR"])
+
+    # Getting the number and percentage of Outlier Values using IQR method:
+    num_outliers = len(series[(series<min_limit)|(series>max_limit)])
+    perc_outliers = num_outliers/len(series)*100
+
+    print("\t\tDESCRIPTION OF THE COLUMN")
+    temp_df = pd.Series({           
+        "Minimum": desc["min"],
+        "Q1 (25%)": desc["25%"],
+        "Q2 (Median)": desc["50%"],
+        "Q3 (75%)": desc["75%"],
+        "Maximum": desc["max"],
+        "IQR Magnitude": desc["IQR"],
+        "Lower Limit of Whisker": min_limit,
+        "Upper Limit of Whisker": max_limit,
+        "Number of Outliers": num_outliers,
+        "Percentage of Outliers": perc_outliers
+    })
+    print(temp_df)
+    
+    return None
+
+
+
+def desc_cat_var(series: pd.Series):
+    """
+    Description:
+        A method to describe a 'categorical' variable without visualization.
+    Args:
+        * series: A Pandas Series containing the information of the variable.
+    Returns:
+        * None
+    """
+    desc = series.value_counts()
+
+    print("\t\tDISTRIBUTION OF THE COLUMN")
+    temp_df = pd.DataFrame({
+        "Categories": desc.index,
+        "Number of Values": desc.values,
+        "Percentage of Values": (desc.values/len(series))*100
+    })
+    print(temp_df)
+    
+    print("\nNumber of Categories\t: ", len(desc))
+    print("\nMost Frequent Category:")
+    print(temp_df.iloc[[0], :])
+    print("\nLeast Frequent Category:")
+    print(temp_df.iloc[[-1], :])
+    
+    return None
