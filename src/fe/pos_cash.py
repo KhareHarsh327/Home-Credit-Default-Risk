@@ -22,7 +22,7 @@ def get_tolerance_days(
         * tolerance_days    : A Pandas Series containing the 
           number of days reduced as a result of special consideration.
     """
-    tolerance_days = days_with_tolerance - days_without_tolerance
+    tolerance_days = days_with_tol - days_without_tol
     return tolerance_days
 
 
@@ -51,8 +51,8 @@ def is_present(
 
     # Feature Generation:
     for value in values:
-        label = value.split()
-        label = "FLAG_POS_" + ("_".join(label).upper())
+        label = value.split()                           # For using join method
+        label = "FLAG_POS_" + ("_".join(label).upper()) # Using the join method
         new_df[label] = ( data[column] == value )
     
     # Feature Aggregation:
@@ -74,16 +74,22 @@ def get_features(df: pd.DataFrame)->pd.DataFrame:
     """
     # Calculating the tolerance days:
     df["POS_DAYS_TOLERANCE"] = get_tolerance_days(
-        days_with_tol = df["SK_ID_DEF"],
-        days_without_tol = df["SK_DPD_DEF"]
+        days_with_tol = df["SK_DPD_DEF"],
+        days_without_tol = df["SK_DPD"]
     )
 
     # Getting the feature presence data for NAME_CONTRACT_STATUS:
     new_df = is_present(
         data = df,
         column = "NAME_CONTRACT_STATUS",
-        values = ["Canceled", "Approved", "Complete"]
+        values = [
+            "Canceled", "Approved", "Completed",
+            "Amortized debt", "Returned to the store"
+        ]
     )
+
+    # Dropping the categorical variable after segmenting:
+    df = df.drop(labels=["NAME_CONTRACT_STATUS"], axis=1)
 
     # Feature Aggregation:
     new_fs = df.groupby(
@@ -91,8 +97,15 @@ def get_features(df: pd.DataFrame)->pd.DataFrame:
     ).median().join(
         other = new_df,
         on = "SK_ID_PREV",
-        how = "inner",
+        how = "left",
         rsuffix = "_R"
-    ).drop(labels=["SK_ID_PREV_R"])
+    ).drop(
+        labels=[
+            "SK_ID_CURR_R", "MONTHS_BALANCE",
+            "CNT_INSTALMENT", "CNT_INSTALMENT_FUTURE",
+            "SK_DPD","SK_DPD_DEF"
+        ],
+        axis=1
+    )
 
     return new_fs
